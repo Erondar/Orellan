@@ -18,6 +18,7 @@
   --risk:#b23a2d; --risk-bg:#f7d8d3;
   --cuadra:#2d5d9b; --cuadra-bg:#d6e3f5;
   --era:#66762f; --era-bg:#e3e9cc;
+  --dis:#6b6478; --dis-bg:#e6e2ec;
   --road:#9aa09c; --shadow:0 -8px 30px rgba(20,30,25,.18);
   --f-display:"Bitter", Georgia, serif;
   --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
@@ -29,7 +30,7 @@
   --accent:#8db4c9; --accent-fg:#10171a;
   --ok:#6cc690; --ok-bg:#1d3a29; --own:#e2ad52; --own-bg:#3c2e15;
   --risk:#f08a7d; --risk-bg:#46221e; --cuadra:#86afea; --cuadra-bg:#1c2e47;
-  --era:#b9ca78; --era-bg:#2d341e; --road:#5f6763; --shadow:0 -8px 30px rgba(0,0,0,.5);
+  --era:#b9ca78; --era-bg:#2d341e; --dis:#b8aecb; --dis-bg:#2c2835; --road:#5f6763; --shadow:0 -8px 30px rgba(0,0,0,.5);
   color-scheme:dark}}
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -56,7 +57,7 @@ button{font:inherit;color:inherit}
 .legend button[aria-pressed="true"]{border-color:var(--fg)}
 .dot{width:12px;height:12px;border-radius:3px;border:2px solid}
 .ok-c{--c:var(--ok);--cb:var(--ok-bg)} .own-c{--c:var(--own);--cb:var(--own-bg)} .risk-c{--c:var(--risk);--cb:var(--risk-bg)}
-.cuadra-c{--c:var(--cuadra);--cb:var(--cuadra-bg)} .era-c{--c:var(--era);--cb:var(--era-bg)}
+.cuadra-c{--c:var(--cuadra);--cb:var(--cuadra-bg)} .era-c{--c:var(--era);--cb:var(--era-bg)} .dis-c{--c:var(--dis);--cb:var(--dis-bg)}
 .dot{background:var(--cb);border-color:var(--c)}
 
 /* plano */
@@ -123,6 +124,17 @@ details.doc[open] summary::after{content:"−"}
 .bar{height:26px;border-radius:6px;background:var(--surface2);border:1px solid var(--line);display:flex;overflow:hidden}
 .bar i{display:block;height:100%}
 .bar .a{background:var(--era)} .bar .b{background:color-mix(in srgb,var(--era) 55%,transparent)} .bar .c{background:color-mix(in srgb,var(--era) 30%,transparent)}
+.quote{margin:0;border-left:4px solid var(--era);padding:6px 0 6px 12px;font-family:var(--f-display);font-size:1.02rem;line-height:1.4}
+.quote cite{display:block;font-family:var(--f-mono);font-style:normal;font-size:.75rem;color:var(--muted);margin-top:6px}
+.shares{display:grid;gap:10px}
+.sh{display:grid;gap:4px}
+.sh-top{display:flex;justify-content:space-between;gap:10px;font-size:.92rem}
+.sh-top span{font-variant-numeric:tabular-nums;color:var(--muted)}
+.sh small{font-size:.8rem;color:var(--muted)}
+.track{height:10px;border-radius:5px;background:var(--surface2);border:1px solid var(--line);overflow:hidden}
+.track i{display:block;height:100%;background:color-mix(in srgb,var(--era) 45%,transparent)}
+.sh.me .track i{background:var(--era)}
+.sh.me .sh-top span{color:var(--fg);font-weight:700}
 .era-res{font-family:var(--f-display);font-size:1.4rem}
 .era-res small{font-family:var(--f-body);font-size:.85rem;color:var(--muted);display:block}
 .key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
@@ -159,6 +171,12 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 .row dd{margin:0;font-size:.98rem}
 .cert{border-left:4px solid var(--c);background:var(--cb);padding:8px 10px;border-radius:0 8px 8px 0;font-size:.9rem}
 .sheet .sdocs{display:grid;gap:8px}
+.ramas{display:grid;gap:6px}
+.rama{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.9rem}
+.rama .q{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.st{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px}
+.st.y{color:var(--ok);background:var(--ok-bg)} .st.p{color:var(--own);background:var(--own-bg)} .st.n{color:var(--risk);background:var(--risk-bg)}
+.prog{font-size:.88rem;color:var(--muted)} .prog b{color:var(--fg)}
 .sdoc{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;text-align:left;width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:.9rem}
 .sdoc b{display:block}
 .sdoc span{color:var(--muted);font-size:.84rem}
@@ -187,7 +205,7 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
           <rect x="14" y="10" width="252" height="72" rx="6"/>
           <text class="t" x="26" y="34">Era</text>
           <text class="s" x="26" y="50">Patio y entrada por detrás</text>
-          <text class="s" x="26" y="64">Compartida entre hermanos</text>
+          <text class="s" x="26" y="64">Abuela: 11/25 (44 %)</text>
         </g>
         <!-- puerta trasera -->
         <line class="door" x1="134" y1="96" x2="160" y2="96"/>
@@ -250,6 +268,13 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
           <text class="s" x="26" y="466">Bodega y gallinero</text>
         </g>
 
+        <!-- terreno -->
+        <g class="zone dis-c" data-id="terreno" tabindex="0" role="button" aria-label="Terreno entre la cuadra y la era">
+          <rect x="276" y="96" width="70" height="46" rx="3"/>
+          <text class="t" x="283" y="116">Terreno</text>
+          <text class="s" x="283" y="131">en discusión</text>
+        </g>
+
         <!-- cuadra -->
         <g class="zone cuadra-c" data-id="cuadra" tabindex="0" role="button" aria-label="Cuadra">
           <rect x="276" y="150" width="70" height="262"/>
@@ -283,17 +308,16 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
       <div class="fact"><b>67,2 m²</b><span>Casa en el Registro (33,6 + 33,6 m²)</span></div>
       <div class="fact"><b>Sin cargas</b><span>Ni hipotecas ni embargos</span></div>
       <div class="fact"><b>½ · ⅙ · ⅙ · ⅙</b><span>María Antonia, Cristian, Iván y David</span></div>
+      <div class="fact"><b>44 %</b><span>Parte de la abuela en la era de San Pablo</span></div>
+      <div class="fact"><b>1955</b><span>Reparto de los bisabuelos entre los seis hermanos</span></div>
+      <div class="fact"><b>5 de 6</b><span>Hermanos con casa en San Pablo; José, el único sin ella</span></div>
     </div>
-    <h2>La era</h2>
+    <h2>La era de San Pablo</h2>
     <div class="era-box">
-      <p style="font-size:.92rem">Solo está inscrita la quinta parte que la abuela compró a Dorentina. Lo demás depende de cómo se repartió la herencia del bisabuelo Agustín. Marca lo que sepáis:</p>
-      <div class="scen">
-        <label><input type="checkbox" id="e-propia"> La abuela tenía su propia quinta parte (heredada de sus padres)</label>
-        <label><input type="checkbox" id="e-leo"> La tía Leo tenía una quinta parte (al morir, se repartió entre sus 5 hermanos)</label>
-      </div>
-      <div class="bar" aria-hidden="true"><i class="a" id="b-a"></i><i class="b" id="b-b"></i><i class="c" id="b-c"></i></div>
-      <div class="key"><span><i style="background:var(--era)"></i>Comprada a Dorentina (inscrita)</span><span><i style="background:color-mix(in srgb,var(--era) 55%,transparent)"></i>Propia</span><span><i style="background:color-mix(in srgb,var(--era) 30%,transparent)"></i>De la tía Leo</span></div>
-      <div class="era-res" id="era-res" aria-live="polite"></div>
+      <blockquote class="quote">"La era de San Pablo queda para los hermanos que les toque casa en San Pablo, con derecho a los pasos de costumbre."<cite>Hijuela de 1955 [D14]</cite></blockquote>
+      <p style="font-size:.92rem">Cinco hermanos recibieron casa en San Pablo (todos menos José), así que la era se repartió en quintas partes y cada parte va con su casa. Por eso Dorentina vendió en 1982 su casa y su quinta parte juntas. La parte de la tía Leo, al morir sin hijos, pasó a sus cinco hermanos.</p>
+      <div class="shares" id="shares"></div>
+      <div class="era-res">11/25 de la era (44 %)<small>Parte de la abuela, hoy de sus herederos. Inscrito en el Registro, solo el quinto de Dorentina.</small></div>
     </div>
   </section>
 
@@ -310,9 +334,10 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
       <article>
         <h3>1. Las dos habitaciones de la tía Leo</h3>
         <ul>
-          <li>Dejarlas fuera de la venta.</li>
-          <li>Venderle a Elvio nuestra quinta parte, y que por escrito asuma el resto y no nos pueda reclamar nada.</li>
-          <li>Hablar antes con los herederos de los otros hermanos para que firmen.</li>
+          <li>Ya ceden los herederos de Dorentina y un hijo de Emilia: con nuestra parte, el 50 %.</li>
+          <li>Falta hablar con el otro hijo de Emilia y con los de José, y llegar a un acuerdo con los de Honorio.</li>
+          <li>Cada cesión tiene que firmarse por escrito; que la redacte el abogado.</li>
+          <li>Lo que no se ceda, Elvio lo compra asumiendo el riesgo por escrito y sin poder reclamarnos nada.</li>
         </ul>
       </article>
       <article>
@@ -323,9 +348,16 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
         </ul>
       </article>
       <article>
-        <h3>3. La cuadra en Catastro</h3>
+        <h3>3. La era</h3>
         <ul>
-          <li>Aclarar el conflicto de titular y ponerla a nombre de los herederos de la abuela, con la permuta de 1984 y la herencia de 2011.</li>
+          <li>Como la era va con las casas de San Pablo, lo coherente es venderle a Elvio también nuestra parte (11/25), con el paso por detrás de la casa.</li>
+        </ul>
+      </article>
+      <article>
+        <h3>4. La cuadra y el terreno de detrás</h3>
+        <ul>
+          <li>Aclarar el conflicto de titular de la cuadra en Catastro y ponerla a nombre de los herederos de la abuela, con la permuta de 1984 y la herencia de 2011.</li>
+          <li>Saber qué ha declarado exactamente la hija de Honorio sobre el terreno de detrás y con qué documento, y comprobar que no corta el acceso a la cuadra ni a la era.</li>
         </ul>
       </article>
     </div>
@@ -366,31 +398,36 @@ const DOCS = {
   D10:{t:"Consulta de la cuadra en el Registro",k:"Registro de la Propiedad de Ponferrada nº 2 · 06/11/2026",b:"La cuadra no está inscrita, ni por polígono y parcela ni a nombre de sus antiguos dueños."},
   D11:{t:"IBI urbano de la casa, 2019",k:"Recibo de la Diputación de León",b:"A nombre de Remedios Morán Blanco, con la referencia catastral de la casa."},
   D12:{t:"IBI rústico, 2019",k:"Recibo de la Diputación de León",b:"A nombre de María Antonia Vega Morán: 26 parcelas rústicas de Borrenes de la herencia."},
-  D13:{t:"Nota firmada por la tía Emilia",k:"Documento privado manuscrito · sin fecha",b:"Emilia Morán Blanco deja \"casa y accesorios\" a su hermana Remedios. No dice qué casa es y no tiene valor de testamento."}
+  D13:{t:"Nota firmada por la tía Emilia",k:"Documento privado manuscrito · sin fecha",b:"Emilia Morán Blanco deja \"casa y accesorios\" a su hermana Remedios. No dice qué casa es y no tiene valor de testamento."},
+  D14:{t:"Hijuela nº 4 de Remedios, 27/08/1955",k:"Documento privado · reparto de los bisabuelos · firmado por todos",b:"Agustín Morán Voces, Isidora Blanco Fernández y la tía Eduvigis reparten sus bienes entre los seis hijos: José, Honorio, Leonarda, Emilia, Remedios y Dorentina. A Remedios le corresponden, entre otras fincas, una casa en San Pablo con su accesorio y corral (partida 36), la Viña del Poulo de 116 m² y un huerto de 40 m² junto a la casa (partida 37). Nota final: \"La era de San Pablo queda para los hermanos que les toque casa en San Pablo, con derecho a los pasos de costumbre\"."}
 };
 
 const ZONES = {
   dorentina:{c:"ok-c",chip:"Escritura inscrita",name:"Cocina, bodega y gallinero",short:"Comprado a Dorentina en 1982",ic:"1982",
-    rows:[["Dueña","Abuela Remedios, 100 %"],["Qué es","La cocina (antiguo corredor) con la bodega debajo, y el llano con el gallinero, frente al camino"],["Origen","La casa de 33,6 m² que compró a Dorentina en 1982"]],
+    rows:[["Dueña","Abuela Remedios, 100 %"],["Qué es","La cocina (antiguo corredor) con la bodega debajo, y el llano con el gallinero, frente al camino"],["Origen","La casa de 33,6 m² que compró a Dorentina en 1982. En la misma escritura compró la quinta parte de la era que iba con esa casa"]],
     cert:"Documentado. Inscrito en el Registro a nombre de la abuela y sin cargas.",docs:["D1","D2","D6","D11"]},
   nueva:{c:"ok-c",chip:"Escritura inscrita",name:"Parte nueva",short:"Pasillo, baño, habitación y despensa",ic:"Obra",
     rows:[["Dueña","Abuela Remedios"],["Qué es","Pasillo, despensa, habitación, baño, salida y escaleras al llano"],["Terreno","El terreno lateral de la escritura de 1982: está a la izquierda mirando desde el camino y mide unos 31 m², frente a los 33,6 m² de la escritura"]],
     cert:"Deducido por el lado y la superficie. La obra no consta declarada en el Registro.",docs:["D1","D2","D6"]},
-  abuela:{c:"own-c",chip:"Sin papeles",name:"Habitación de la abuela y lucido",short:"Herencia de sus padres",ic:"Abuela",
-    rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","Reparto de la herencia de sus padres, hecho de palabra"]],
-    cert:"Según la familia. Está dentro de la parcela catastral de la casa, a nombre de la abuela.",docs:["D6","D11"]},
+  abuela:{c:"own-c",chip:"Documento privado",name:"Habitación de la abuela y lucido",short:"Reparto de los bisabuelos, 1955",ic:"1955",
+    rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","La casa en San Pablo, con su accesorio y corral, que le tocó en el reparto de sus padres de 1955 (partida 36 de su hijuela)"]],
+    cert:"Documentado en la hijuela de 1955, firmada por todos los hermanos. No está inscrito en el Registro. Está dentro de la parcela catastral de la casa, a nombre de la abuela.",docs:["D14","D6","D11"]},
   leo:{c:"risk-c",chip:"Pendiente de decidir",name:"Habitaciones de la tía Leo",short:"Hoy, de sus hermanos o sus herederos",ic:"Leo",
-    rows:[["Qué es","Las dos habitaciones junto a la puerta trasera, la que da a la era"],["De quién","La tía Leo murió sin hijos. Las heredaron sus 5 hermanos: Honorio, Dorentina, José, Remedios y Emilia; hoy, sus herederos"],["Nuestra parte","La de la abuela: un quinto"]],
-    cert:"Según la familia, con apoyo en la escritura de 1982, donde la casa linda al fondo con Leonarda Morán. No hay ningún título.",docs:["D1"]},
+    rows:[["Qué es","Las dos habitaciones junto a la puerta trasera, la que da a la era"],["Origen","La casa en San Pablo que le tocó a Leonarda en el reparto de 1955 (su hijuela no la tenemos)"],["De quién","La tía Leo murió sin hijos. Las heredaron sus 5 hermanos: José, Honorio, Dorentina, Remedios y Emilia; hoy, sus herederos"],["Nuestra parte","La de la abuela: un quinto de las habitaciones, y un quinto de la parte de era que iba con ellas"]],
+    cert:"Según la familia, con apoyo en la escritura de 1982 (la casa linda al fondo con Leonarda Morán) y en el reparto de 1955. Ningún título a nombre de la abuela.",docs:["D1","D14"],
+    ramas:[["Remedios (nosotros)","1/5","y","Nuestra"],["Dorentina","1/5","y","Ceden"],["Emilia, un hijo","1/10","y","Cede"],["Emilia, otro hijo","1/10","p","Sin hablar"],["José","1/5","p","Pendiente"],["Honorio","1/5","n","Sin acuerdo"]]},
   cuadra:{c:"cuadra-c",chip:"Sin inscribir",name:"Cuadra",short:"\"Casa de las Bolesas\", parcela 2047",ic:"1984",
-    rows:[["Dueña","Abuela Remedios, por permuta con Honorio y Clementina en 1984"],["Catastro","Estaba a nombre de Honorio. Hoy tiene la referencia 24023A034020470001AA y su titular está en conflicto"],["Registro","No está inscrita a nombre de nadie"],["Oferta","Elvio ofrece 3.000 €"]],
-    cert:"Documentado con contrato privado y declarado en la herencia de 2011.",docs:["D4","D5","D8","D9","D10"]},
-  era:{c:"era-c",chip:"Compartida",name:"Era",short:"Del bisabuelo Agustín, en quintas partes",ic:"1/5",
-    rows:[["Origen","Del bisabuelo Agustín Morán Voces, repartida en quintas partes entre hermanos"],["Abuela","Un quinto comprado a Dorentina, inscrito. Puede tener más: su propia quinta parte y lo que le tocó de la tía Leo (ver la pestaña Partes)"],["Uso","El patio y la entrada por detrás de la casa probablemente están sobre la era"]],
-    cert:"Solo está inscrito el quinto de Dorentina. No figura en la herencia de 2011.",docs:["D1","D3"]}
+    rows:[["Dueña","Abuela Remedios, por permuta con Honorio y Clementina en 1984"],["A cambio","La Viña del Poulo (116 m²), que era de la abuela por el reparto de 1955"],["Catastro","Estaba a nombre de Honorio. Hoy tiene la referencia 24023A034020470001AA y su titular está en conflicto"],["Registro","No está inscrita a nombre de nadie"],["Oferta","Elvio ofrece 3.000 €"]],
+    cert:"Documentado con contrato privado y declarado en la herencia de 2011.",docs:["D4","D14","D5","D8","D9","D10"]},
+  terreno:{c:"dis-c",chip:"En discusión",name:"Terreno entre la cuadra y la era",short:"Una hija de Honorio lo ha puesto a su nombre",ic:"?",
+    rows:[["Qué es","Un terreno pequeño detrás de la cuadra, entre la cuadra y la era. No es la era"],["Situación","Una de las hijas de Honorio lo ha puesto a su nombre y dice que es suyo"],["A favor de ella","La permuta de 1984 habla solo de la cuadra, no de este terreno"],["A favor de la abuela","Su hijuela de 1955 le da un huerto de 40 m² junto a la casa, con paso hacia los huertos y la era. No sabemos si es este terreno"]],
+    cert:"Sin aclarar. Por su tamaño no afecta a la venta, salvo que por ahí pase el acceso a la cuadra o a la era.",docs:["D4","D14"]},
+  era:{c:"era-c",chip:"Abuela 44 %",name:"Era de San Pablo",short:"Va con las casas de San Pablo",ic:"44%",
+    rows:[["Origen","Reparto de los bisabuelos de 1955: la era quedó para los cinco hermanos que recibieron casa en San Pablo (todos menos José), una quinta parte cada uno"],["Abuela","Su quinta parte de 1955, la de Dorentina comprada con su casa en 1982, y un veinticincoavo de la parte de Leo: 11/25"],["Uso","El patio y la entrada por detrás de la casa están sobre la era, con derecho de paso"]],
+    cert:"Inscrito solo el quinto de Dorentina. La quinta parte propia consta en la hijuela de 1955. La era no figura en la herencia de 2011.",docs:["D14","D1","D3"]}
 };
-const ORDER=["dorentina","nueva","abuela","leo","cuadra","era"];
-const LEG=[["ok-c","Con escritura"],["own-c","Sin papeles"],["risk-c","Tía Leo"],["cuadra-c","Cuadra"],["era-c","Era"]];
+const ORDER=["dorentina","nueva","abuela","leo","cuadra","terreno","era"];
+const LEG=[["ok-c","Con escritura"],["own-c","Documento privado"],["risk-c","Tía Leo"],["cuadra-c","Cuadra"],["era-c","Era"],["dis-c","En discusión"]];
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
@@ -444,6 +481,7 @@ function openZone(id){
   $("#s-content").innerHTML=
     `<dl class="rows">${z.rows.map(([a,b])=>`<div class="row"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>`+
     `<p class="cert">${esc(z.cert)}</p>`+
+    (z.ramas?`<div class="row"><dt>Cesiones de los herederos de Leo</dt></div><div class="ramas">${z.ramas.map(([n,q,k,t])=>`<div class="rama"><span>${esc(n)}</span><span class="q">${q}</span><span class="st ${k}">${esc(t)}</span></div>`).join("")}</div><p class="prog"><b>50 %</b> cubierto. Con José y el otro hijo de Emilia, el 80 %. Las cesiones tienen que constar por escrito.</p>`:"")+
     `<div><div class="row"><dt>Documentos</dt></div><div class="sdocs">${z.docs.map(d=>`<button class="sdoc" data-d="${d}"><span class="code">${d}</span><span><b>${esc(DOCS[d].t)}</b><span>${esc(DOCS[d].b)}</span></span></button>`).join("")}</div></div>`;
   scrim.classList.add("on");
   $$(".zone").forEach(g=>g.classList.toggle("sel",g.dataset.id===id));
@@ -465,16 +503,14 @@ $$(".zone").forEach(g=>{
   g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openZone(g.dataset.id);}});
 });
 
-/* calculadora de la era */
-function era(){
-  const p=$("#e-propia").checked, l=$("#e-leo").checked;
-  const a=1/5, b=p?1/5:0, c=l?1/25:0, t=a+b+c;
-  $("#b-a").style.width=(a*100)+"%"; $("#b-b").style.width=(b*100)+"%"; $("#b-c").style.width=(c*100)+"%";
-  const pct=(t*100).toLocaleString("es-ES",{maximumFractionDigits:0});
-  const f = !p&&!l?"1/5": !p&&l?"6/25": p&&!l?"2/5":"11/25";
-  $("#era-res").innerHTML=`${f} de la era (${pct} %)<small>Parte de la abuela, y hoy de sus herederos. Con papeles, solo el quinto comprado a Dorentina.</small>`;
-}
-$("#e-propia").onchange=era; $("#e-leo").onchange=era; era();
+/* reparto de la era */
+const SH=[
+  ["Remedios","Su quinta parte, la de Dorentina y 1/25 de Leo",11,true],
+  ["Honorio","Su quinta parte y 1/25 de Leo",6],
+  ["Emilia","Su quinta parte y 1/25 de Leo",6],
+  ["José","1/25 de Leo",1],
+  ["Dorentina","1/25 de Leo",1]];
+$("#shares").innerHTML=SH.map(([n,o,v,me])=>`<div class="sh${me?" me":""}"><div class="sh-top"><b>${n}</b><span>${v}/25 · ${v*4} %</span></div><div class="track"><i style="width:${v*4}%"></i></div><small>${o}</small></div>`).join("");
 </script>
 </body>
 </html>
