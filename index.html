@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Casa de Orellán</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Mobile first: barra de pestañas fija abajo, plano en vertical (era arriba, camino abajo), ficha deslizante al tocar cada zona. */
+:root{
+  --bg:#eef0ec; --surface:#ffffff; --surface2:#f6f7f4; --fg:#1d2420; --muted:#5b6660; --line:#d3d9d4;
+  --accent:#34586b; --accent-fg:#ffffff;
+  --ok:#2e7a4d; --ok-bg:#d8eedf;
+  --own:#9c6610; --own-bg:#f5e3c2;
+  --risk:#b23a2d; --risk-bg:#f7d8d3;
+  --cuadra:#2d5d9b; --cuadra-bg:#d6e3f5;
+  --era:#66762f; --era-bg:#e3e9cc;
+  --road:#9aa09c; --shadow:0 -8px 30px rgba(20,30,25,.18);
+  --f-display:"Bitter", Georgia, serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#131816; --surface:#1c2320; --surface2:#222b27; --fg:#e7ece9; --muted:#a3ada8; --line:#33403a;
+  --accent:#8db4c9; --accent-fg:#10171a;
+  --ok:#6cc690; --ok-bg:#1d3a29; --own:#e2ad52; --own-bg:#3c2e15;
+  --risk:#f08a7d; --risk-bg:#46221e; --cuadra:#86afea; --cuadra-bg:#1c2e47;
+  --era:#b9ca78; --era-bg:#2d341e; --road:#5f6763; --shadow:0 -8px 30px rgba(0,0,0,.5);
+  color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body);-webkit-text-size-adjust:100%;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.2;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* cabecera */
+.top{padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:12px}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.top h1{font-size:1.9rem;margin-top:4px}
+.top p{color:var(--muted);margin-top:6px;max-width:60ch}
+
+/* vistas */
+.view{display:none;padding-block:8px 24px}
+.view.on{display:grid;gap:16px}
+.view h2{font-size:1.3rem}
+
+/* leyenda */
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.legend button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:.82rem;cursor:pointer}
+.legend button[aria-pressed="true"]{border-color:var(--fg)}
+.dot{width:12px;height:12px;border-radius:3px;border:2px solid}
+.ok-c{--c:var(--ok);--cb:var(--ok-bg)} .own-c{--c:var(--own);--cb:var(--own-bg)} .risk-c{--c:var(--risk);--cb:var(--risk-bg)}
+.cuadra-c{--c:var(--cuadra);--cb:var(--cuadra-bg)} .era-c{--c:var(--era);--cb:var(--era-bg)}
+.dot{background:var(--cb);border-color:var(--c)}
+
+/* plano */
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px}
+.plan svg{display:block;width:100%;height:auto;max-height:78vh}
+.hint{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted)}
+.hint b{color:var(--fg)}
+svg text{font-family:var(--f-body);fill:var(--fg);pointer-events:none}
+svg .t{font-size:11.5px;font-weight:700}
+svg .s{font-size:9.5px;fill:var(--muted)}
+.zone{cursor:pointer;outline:none}
+.zone rect,.zone path{fill:var(--cb);stroke:var(--c);stroke-width:2;transition:filter .15s, opacity .2s}
+.zone:hover rect,.zone:focus-visible rect{filter:brightness(.94)}
+.zone:focus-visible rect{stroke-width:3.5}
+.zone.sel rect{stroke-width:3.5;filter:brightness(.9)}
+.plan.filtering .zone:not(.match){opacity:.25}
+.fixed rect{fill:var(--surface2);stroke:var(--line);stroke-width:1.5}
+.road rect{fill:var(--line);stroke:var(--road)}
+.lucido rect{fill:var(--cb);stroke:var(--c);stroke-dasharray:4 3}
+.door{stroke:var(--fg);stroke-width:4;stroke-linecap:round}
+.pulse{fill:var(--accent);opacity:.9}
+@media (prefers-reduced-motion:no-preference){
+  .pulse{animation:pulse 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes pulse{0%{opacity:.9;transform:scale(1)}70%{opacity:0;transform:scale(2.6)}100%{opacity:0}}
+}
+
+/* tarjetas */
+.cards{display:grid;gap:10px}
+.card{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:12px 14px;cursor:pointer}
+.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.card .ic{width:36px;height:36px;border-radius:8px;background:var(--cb);display:grid;place-items:center;color:var(--c);font-weight:700;font-family:var(--f-mono);font-size:.8rem}
+.card h3{font-size:1rem}
+.card p{font-size:.86rem;color:var(--muted)}
+.card .go{color:var(--muted);font-size:1.2rem}
+.chip{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;color:var(--c);background:var(--cb);margin-bottom:2px}
+
+/* datos */
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.fact b{display:block;font-family:var(--f-display);font-size:1.15rem;font-variant-numeric:tabular-nums}
+.fact span{font-size:.8rem;color:var(--muted)}
+
+/* documentos */
+.docs{display:grid;gap:8px}
+details.doc{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details.doc summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:12px 14px;cursor:pointer}
+details.doc summary::-webkit-details-marker{display:none}
+details.doc summary::after{content:"+";color:var(--muted);font-size:1.2rem}
+details.doc[open] summary::after{content:"−"}
+.code{font-family:var(--f-mono);font-size:.8rem;color:var(--accent-fg);background:var(--accent);border-radius:6px;padding:2px 7px}
+.doc .ttl{font-weight:600;font-size:.95rem;line-height:1.3}
+.doc .kind{display:block;font-size:.75rem;color:var(--muted);font-weight:400}
+.doc .body{padding:0 14px 14px;font-size:.92rem;display:grid;gap:8px}
+.doc .rel{display:flex;flex-wrap:wrap;gap:6px}
+.doc.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+.mini{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:3px 10px;font-size:.8rem;cursor:pointer}
+
+/* era */
+.era-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:12px}
+.scen{display:grid;gap:10px}
+.scen label{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;cursor:pointer}
+.scen input{margin-top:4px;width:18px;height:18px;accent-color:var(--era)}
+.bar{height:26px;border-radius:6px;background:var(--surface2);border:1px solid var(--line);display:flex;overflow:hidden}
+.bar i{display:block;height:100%}
+.bar .a{background:var(--era)} .bar .b{background:color-mix(in srgb,var(--era) 55%,transparent)} .bar .c{background:color-mix(in srgb,var(--era) 30%,transparent)}
+.era-res{font-family:var(--f-display);font-size:1.4rem}
+.era-res small{font-family:var(--f-body);font-size:.85rem;color:var(--muted);display:block}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* pendiente */
+.todo{display:grid;gap:10px}
+.todo article{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px}
+.todo h3{font-size:1.02rem}
+.todo ul{margin:0;padding-left:1.1em;display:grid;gap:4px;font-size:.92rem}
+.foot{font-size:.8rem;color:var(--muted);padding-bottom:12px}
+
+/* barra inferior */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav.tabs button{background:none;border:0;padding:10px 4px 12px;display:grid;justify-items:center;gap:2px;font-size:.74rem;color:var(--muted);cursor:pointer}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
+
+/* ficha deslizante */
+.scrim{position:fixed;inset:0;background:rgba(10,15,12,.35);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;max-width:720px;margin:0 auto;background:var(--surface);border-radius:18px 18px 0 0;box-shadow:var(--shadow);max-height:82vh;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .25s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet.on{transform:none}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none}}
+.sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 0}
+.sheet header{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;padding:12px max(18px,env(safe-area-inset-left,0px)) 8px}
+.sheet h2{font-size:1.3rem}
+.close{border:1px solid var(--line);background:var(--surface2);border-radius:999px;width:36px;height:36px;flex:none;cursor:pointer;font-size:1.1rem}
+.sheet .content{overflow-y:auto;padding:4px max(18px,env(safe-area-inset-left,0px)) 20px;display:grid;gap:14px;-webkit-overflow-scrolling:touch}
+.rows{display:grid;gap:10px}
+.row{display:grid;gap:2px}
+.row dt{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.row dd{margin:0;font-size:.98rem}
+.cert{border-left:4px solid var(--c);background:var(--cb);padding:8px 10px;border-radius:0 8px 8px 0;font-size:.9rem}
+.sheet .sdocs{display:grid;gap:8px}
+.sdoc{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;text-align:left;width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:.9rem}
+.sdoc b{display:block}
+.sdoc span{color:var(--muted);font-size:.84rem}
+.sdoc .code{color:var(--accent-fg);font-size:.8rem}
+@media (min-width:640px){.facts{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="wrap top">
+  <div class="eyebrow">Orellán · Borrenes (León)</div>
+  <h1>Casa de Orellán</h1>
+  <p>Qué es cada parte de la casa de la abuela Remedios, de quién es y en qué documento consta.</p>
+</div>
+
+<main class="wrap">
+  <!-- PLANO -->
+  <section class="view on" id="v-plano" aria-labelledby="h-plano">
+    <h2 id="h-plano">Plano</h2>
+    <div class="hint"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="var(--accent)"/></svg><span><b>Toca una zona</b> para ver de quién es y sus documentos.</span></div>
+    <div class="legend" id="legend" aria-label="Filtrar por situación"></div>
+    <div class="plan" id="plan">
+      <svg viewBox="0 0 360 600" role="group" aria-label="Plano esquemático de la casa, con la era arriba y el camino abajo">
+        <!-- era -->
+        <g class="zone era-c" data-id="era" tabindex="0" role="button" aria-label="Era">
+          <rect x="14" y="10" width="252" height="72" rx="6"/>
+          <text class="t" x="26" y="34">Era</text>
+          <text class="s" x="26" y="50">Patio y entrada por detrás</text>
+          <text class="s" x="26" y="64">Compartida entre hermanos</text>
+        </g>
+        <!-- puerta trasera -->
+        <line class="door" x1="134" y1="96" x2="160" y2="96"/>
+        <text class="s" x="168" y="92">puerta trasera</text>
+
+        <!-- pasillo -->
+        <g class="fixed"><rect x="128" y="96" width="38" height="226"/></g>
+        <text class="s" transform="translate(150 230) rotate(-90)">pasillo</text>
+
+        <!-- lucido -->
+        <g class="zone lucido own-c" data-id="abuela" tabindex="0" role="button" aria-label="Lucido">
+          <rect x="132" y="250" width="30" height="62" rx="3"/>
+          <text class="s" transform="translate(151 300) rotate(-90)">lucido</text>
+        </g>
+
+        <!-- habitaciones -->
+        <g class="zone risk-c" data-id="leo" tabindex="0" role="button" aria-label="Habitación 1 de la tía Leo">
+          <rect x="166" y="96" width="100" height="74"/>
+          <text class="t" x="176" y="124">Habitación 1</text>
+          <text class="s" x="176" y="140">Tía Leo</text>
+        </g>
+        <g class="zone risk-c" data-id="leo" tabindex="0" role="button" aria-label="Habitación 2 de la tía Leo">
+          <rect x="166" y="170" width="100" height="74"/>
+          <text class="t" x="176" y="198">Habitación 2</text>
+          <text class="s" x="176" y="214">Tía Leo</text>
+        </g>
+        <g class="zone own-c" data-id="abuela" tabindex="0" role="button" aria-label="Habitación de la abuela">
+          <rect x="166" y="244" width="100" height="78"/>
+          <text class="t" x="176" y="272">Habitación</text>
+          <text class="t" x="176" y="286">de la abuela</text>
+        </g>
+
+        <!-- parte nueva -->
+        <g class="zone ok-c" data-id="nueva" tabindex="0" role="button" aria-label="Parte nueva">
+          <rect x="14" y="150" width="114" height="262"/>
+          <text class="t" x="24" y="172">Parte nueva</text>
+          <line x1="14" y1="190" x2="128" y2="190" stroke="var(--ok)" stroke-width="1"/>
+          <text class="s" x="24" y="216">Despensa</text>
+          <line x1="14" y1="245" x2="128" y2="245" stroke="var(--ok)" stroke-width="1"/>
+          <text class="s" x="24" y="271">Habitación</text>
+          <line x1="14" y1="300" x2="128" y2="300" stroke="var(--ok)" stroke-width="1"/>
+          <text class="s" x="24" y="326">Baño</text>
+          <line x1="14" y1="352" x2="128" y2="352" stroke="var(--ok)" stroke-width="1"/>
+          <text class="s" x="24" y="378">Salida y escaleras</text>
+          <text class="s" x="24" y="392">al llano</text>
+        </g>
+
+        <!-- cocina -->
+        <g class="zone ok-c" data-id="dorentina" tabindex="0" role="button" aria-label="Cocina">
+          <rect x="128" y="322" width="138" height="90"/>
+          <text class="t" x="138" y="352">Cocina</text>
+          <text class="s" x="138" y="368">Antiguo corredor</text>
+          <text class="s" x="138" y="382">Bodega debajo</text>
+        </g>
+
+        <!-- llano -->
+        <g class="zone ok-c" data-id="dorentina" tabindex="0" role="button" aria-label="Llano con bodega y gallinero">
+          <rect x="14" y="426" width="252" height="56" rx="4"/>
+          <text class="t" x="26" y="450">Llano (nivel bajo)</text>
+          <text class="s" x="26" y="466">Bodega y gallinero</text>
+        </g>
+
+        <!-- cuadra -->
+        <g class="zone cuadra-c" data-id="cuadra" tabindex="0" role="button" aria-label="Cuadra">
+          <rect x="276" y="150" width="70" height="262"/>
+          <text class="t" x="284" y="174">Cuadra</text>
+          <text class="s" x="284" y="190">Parcela</text>
+          <text class="s" x="284" y="203">2047</text>
+          <text class="s" x="284" y="226">89 m²</text>
+          <text class="s" x="284" y="239">2 plantas</text>
+        </g>
+
+        <!-- camino -->
+        <g class="road"><rect x="0" y="500" width="360" height="34" rx="4"/></g>
+        <text class="t" x="100" y="522">Camino vecinal</text>
+        <text class="s" x="14" y="560">Esquema orientativo, no a escala.</text>
+        <text class="s" x="14" y="574">Vista desde arriba, con el camino abajo.</text>
+
+        <circle class="pulse" cx="248" cy="112" r="5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- PARTES -->
+  <section class="view" id="v-partes" aria-labelledby="h-partes">
+    <h2 id="h-partes">De quién es cada parte</h2>
+    <div class="cards" id="cards"></div>
+    <h2>Datos clave</h2>
+    <div class="facts">
+      <div class="fact"><b>25.772,94 €</b><span>Valor de referencia de la casa en Catastro</span></div>
+      <div class="fact"><b>Sin valor</b><span>La cuadra no tiene valor de referencia</span></div>
+      <div class="fact"><b>157 m²</b><span>Parcela de la casa en Catastro (153 m² construidos)</span></div>
+      <div class="fact"><b>67,2 m²</b><span>Casa en el Registro (33,6 + 33,6 m²)</span></div>
+      <div class="fact"><b>Sin cargas</b><span>Ni hipotecas ni embargos</span></div>
+      <div class="fact"><b>½ · ⅙ · ⅙ · ⅙</b><span>María Antonia, Cristian, Iván y David</span></div>
+    </div>
+    <h2>La era</h2>
+    <div class="era-box">
+      <p style="font-size:.92rem">Solo está inscrita la quinta parte que la abuela compró a Dorentina. Lo demás depende de cómo se repartió la herencia del bisabuelo Agustín. Marca lo que sepáis:</p>
+      <div class="scen">
+        <label><input type="checkbox" id="e-propia"> La abuela tenía su propia quinta parte (heredada de sus padres)</label>
+        <label><input type="checkbox" id="e-leo"> La tía Leo tenía una quinta parte (al morir, se repartió entre sus 5 hermanos)</label>
+      </div>
+      <div class="bar" aria-hidden="true"><i class="a" id="b-a"></i><i class="b" id="b-b"></i><i class="c" id="b-c"></i></div>
+      <div class="key"><span><i style="background:var(--era)"></i>Comprada a Dorentina (inscrita)</span><span><i style="background:color-mix(in srgb,var(--era) 55%,transparent)"></i>Propia</span><span><i style="background:color-mix(in srgb,var(--era) 30%,transparent)"></i>De la tía Leo</span></div>
+      <div class="era-res" id="era-res" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTOS -->
+  <section class="view" id="v-docs" aria-labelledby="h-docs">
+    <h2 id="h-docs">Documentos</h2>
+    <div class="docs" id="docs"></div>
+  </section>
+
+  <!-- PENDIENTE -->
+  <section class="view" id="v-pend" aria-labelledby="h-pend">
+    <h2 id="h-pend">Lo que queda por decidir</h2>
+    <div class="todo">
+      <article>
+        <h3>1. Las dos habitaciones de la tía Leo</h3>
+        <ul>
+          <li>Dejarlas fuera de la venta.</li>
+          <li>Venderle a Elvio nuestra quinta parte, y que por escrito asuma el resto y no nos pueda reclamar nada.</li>
+          <li>Hablar antes con los herederos de los otros hermanos para que firmen.</li>
+        </ul>
+      </article>
+      <article>
+        <h3>2. El precio</h3>
+        <ul>
+          <li>Casa: valor de referencia de Catastro, 25.772,94 €.</li>
+          <li>Cuadra: Elvio ofrece 3.000 €.</li>
+        </ul>
+      </article>
+      <article>
+        <h3>3. La cuadra en Catastro</h3>
+        <ul>
+          <li>Aclarar el conflicto de titular y ponerla a nombre de los herederos de la abuela, con la permuta de 1984 y la herencia de 2011.</li>
+        </ul>
+      </article>
+    </div>
+    <p class="foot">Resumen informativo preparado con los documentos citados y lo que recuerda la familia. Superficies y ubicaciones aproximadas. No sustituye el consejo de un abogado o notario.</p>
+  </section>
+</main>
+
+<nav class="tabs" role="tablist" aria-label="Secciones">
+  <div class="in">
+    <button role="tab" data-v="plano" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v10H3z"/><path d="M9 20v-6h6v6"/></svg>Plano</button>
+    <button role="tab" data-v="partes" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg>Partes</button>
+    <button role="tab" data-v="docs" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg>Documentos</button>
+    <button role="tab" data-v="pend" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M4 20h16"/></svg>Pendiente</button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="s-title">
+  <div class="grab"></div>
+  <header>
+    <div><span class="chip" id="s-chip"></span><h2 id="s-title"></h2></div>
+    <button class="close" id="s-close" aria-label="Cerrar">✕</button>
+  </header>
+  <div class="content" id="s-content"></div>
+</div>
+
+<script>
+const DOCS = {
+  D1:{t:"Escritura de compraventa, 17/11/1982",k:"Escritura pública · Notario Manuel Benito Pérez, Ponferrada, nº 2.102",b:"Dorentina vende a Remedios una quinta parte de una era en San Pablo (unos 400 m²) y una casa de 33,6 m² con un terreno en su lado izquierdo, mirando desde la calle, de otros 33,6 m². La casa linda al frente con el camino vecinal y al fondo con Leonarda Morán. Inscrita en el Registro en 1984."},
+  D2:{t:"Nota simple de la casa, finca 2024",k:"Registro de la Propiedad de Ponferrada nº 2 · 03/11/2026 · CRU 24016000156821",b:"A nombre de Remedios Morán Blanco, 100 %, por la compra de 1982. Sin cargas. La herencia no está inscrita."},
+  D3:{t:"Nota simple de la era, finca 2023",k:"Registro de la Propiedad de Ponferrada nº 2 · 03/11/2026 · CRU 24016000156814",b:"Remedios tiene una quinta parte indivisa. Sin cargas. El resto de la era no tiene titular inscrito."},
+  D4:{t:"Contrato de permuta, 25/09/1984",k:"Documento privado · Orellán",b:"Remedios da a Honorio y Clementina la finca \"Viña del Poulo\" (unos 116 m²) y recibe la casa \"de las Bolesas\": cuadra, primera planta habitable, segunda lucida y cubierta de pizarra."},
+  D5:{t:"Liquidación del Impuesto de Sucesiones, 2011",k:"Oficina Liquidadora de Ponferrada · 26/05/2011 · nº 24-DPFR-PRE-PRE-11-000865",b:"Remedios falleció sin testamento el 28/11/2010. Herederos: su hija María Antonia Vega Morán (la mitad) y, por su hijo David Vega Morán, sus nietos Cristian, Iván y David Vega Cobo (un sexto cada uno). Bienes declarados: la casa (15.626,03 €) y la cuadra (9.251,99 €)."},
+  D6:{t:"Catastro de la casa",k:"Consulta 02/11/2026 · Ref. 001801100QN90G0001PK",b:"Orellán 30(A). Residencial, año 1890. Parcela de 157 m² y 153 m² construidos (92 m² en planta baja y 61 m² en planta primera)."},
+  D7:{t:"Valor de referencia de la casa",k:"Certificado de Catastro · 02/11/2026",b:"25.772,94 €."},
+  D8:{t:"Catastro antiguo de la cuadra",k:"Consulta antigua · Ref. 001801600QN90G0001OK",b:"Orellán 35(A), 86 m² en dos plantas de 43 m². Titular: Honorio Morán Blanco, 100 %."},
+  D9:{t:"Catastro actual de la cuadra",k:"Consulta y valor de referencia · 02/11/2026 · Ref. 24023A034020470001AA",b:"Polígono 34, parcela 2047. Uso agrario, parcela de 94 m² y 89 m² construidos (54 + 35). No tiene valor de referencia."},
+  D10:{t:"Consulta de la cuadra en el Registro",k:"Registro de la Propiedad de Ponferrada nº 2 · 06/11/2026",b:"La cuadra no está inscrita, ni por polígono y parcela ni a nombre de sus antiguos dueños."},
+  D11:{t:"IBI urbano de la casa, 2019",k:"Recibo de la Diputación de León",b:"A nombre de Remedios Morán Blanco, con la referencia catastral de la casa."},
+  D12:{t:"IBI rústico, 2019",k:"Recibo de la Diputación de León",b:"A nombre de María Antonia Vega Morán: 26 parcelas rústicas de Borrenes de la herencia."},
+  D13:{t:"Nota firmada por la tía Emilia",k:"Documento privado manuscrito · sin fecha",b:"Emilia Morán Blanco deja \"casa y accesorios\" a su hermana Remedios. No dice qué casa es y no tiene valor de testamento."}
+};
+
+const ZONES = {
+  dorentina:{c:"ok-c",chip:"Escritura inscrita",name:"Cocina, bodega y gallinero",short:"Comprado a Dorentina en 1982",ic:"1982",
+    rows:[["Dueña","Abuela Remedios, 100 %"],["Qué es","La cocina (antiguo corredor) con la bodega debajo, y el llano con el gallinero, frente al camino"],["Origen","La casa de 33,6 m² que compró a Dorentina en 1982"]],
+    cert:"Documentado. Inscrito en el Registro a nombre de la abuela y sin cargas.",docs:["D1","D2","D6","D11"]},
+  nueva:{c:"ok-c",chip:"Escritura inscrita",name:"Parte nueva",short:"Pasillo, baño, habitación y despensa",ic:"Obra",
+    rows:[["Dueña","Abuela Remedios"],["Qué es","Pasillo, despensa, habitación, baño, salida y escaleras al llano"],["Terreno","El terreno lateral de la escritura de 1982: está a la izquierda mirando desde el camino y mide unos 31 m², frente a los 33,6 m² de la escritura"]],
+    cert:"Deducido por el lado y la superficie. La obra no consta declarada en el Registro.",docs:["D1","D2","D6"]},
+  abuela:{c:"own-c",chip:"Sin papeles",name:"Habitación de la abuela y lucido",short:"Herencia de sus padres",ic:"Abuela",
+    rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","Reparto de la herencia de sus padres, hecho de palabra"]],
+    cert:"Según la familia. Está dentro de la parcela catastral de la casa, a nombre de la abuela.",docs:["D6","D11"]},
+  leo:{c:"risk-c",chip:"Pendiente de decidir",name:"Habitaciones de la tía Leo",short:"Hoy, de sus hermanos o sus herederos",ic:"Leo",
+    rows:[["Qué es","Las dos habitaciones junto a la puerta trasera, la que da a la era"],["De quién","La tía Leo murió sin hijos. Las heredaron sus 5 hermanos: Honorio, Dorentina, José, Remedios y Emilia; hoy, sus herederos"],["Nuestra parte","La de la abuela: un quinto"]],
+    cert:"Según la familia, con apoyo en la escritura de 1982, donde la casa linda al fondo con Leonarda Morán. No hay ningún título.",docs:["D1"]},
+  cuadra:{c:"cuadra-c",chip:"Sin inscribir",name:"Cuadra",short:"\"Casa de las Bolesas\", parcela 2047",ic:"1984",
+    rows:[["Dueña","Abuela Remedios, por permuta con Honorio y Clementina en 1984"],["Catastro","Estaba a nombre de Honorio. Hoy tiene la referencia 24023A034020470001AA y su titular está en conflicto"],["Registro","No está inscrita a nombre de nadie"],["Oferta","Elvio ofrece 3.000 €"]],
+    cert:"Documentado con contrato privado y declarado en la herencia de 2011.",docs:["D4","D5","D8","D9","D10"]},
+  era:{c:"era-c",chip:"Compartida",name:"Era",short:"Del bisabuelo Agustín, en quintas partes",ic:"1/5",
+    rows:[["Origen","Del bisabuelo Agustín Morán Voces, repartida en quintas partes entre hermanos"],["Abuela","Un quinto comprado a Dorentina, inscrito. Puede tener más: su propia quinta parte y lo que le tocó de la tía Leo (ver la pestaña Partes)"],["Uso","El patio y la entrada por detrás de la casa probablemente están sobre la era"]],
+    cert:"Solo está inscrito el quinto de Dorentina. No figura en la herencia de 2011.",docs:["D1","D3"]}
+};
+const ORDER=["dorentina","nueva","abuela","leo","cuadra","era"];
+const LEG=[["ok-c","Con escritura"],["own-c","Sin papeles"],["risk-c","Tía Leo"],["cuadra-c","Cuadra"],["era-c","Era"]];
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+/* pestañas */
+function show(v){
+  $$(".view").forEach(x=>x.classList.toggle("on",x.id==="v-"+v));
+  $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+  window.scrollTo({top:0});
+  try{history.replaceState(null,"","#"+v)}catch(e){}
+}
+$$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.v)));
+const h=location.hash.slice(1); if(["plano","partes","docs","pend"].includes(h)) show(h);
+
+/* leyenda / filtro */
+const leg=$("#legend"); let filter=null;
+LEG.forEach(([c,l])=>{
+  const b=document.createElement("button"); b.className=c; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<i class="dot"></i>${l}`;
+  b.onclick=()=>{filter=filter===c?null:c;
+    $$("#legend button").forEach(x=>x.setAttribute("aria-pressed",x===b&&filter?"true":"false"));
+    $("#plan").classList.toggle("filtering",!!filter);
+    $$(".zone").forEach(z=>z.classList.toggle("match",!!filter&&z.classList.contains(filter)));};
+  leg.appendChild(b);
+});
+
+/* tarjetas */
+const cards=$("#cards");
+ORDER.forEach(id=>{const z=ZONES[id];
+  const b=document.createElement("button"); b.className="card "+z.c;
+  b.innerHTML=`<span class="ic">${esc(z.ic)}</span><span><span class="chip">${esc(z.chip)}</span><h3>${esc(z.name)}</h3><p>${esc(z.short)}</p></span><span class="go" aria-hidden="true">›</span>`;
+  b.onclick=()=>openZone(id); cards.appendChild(b);});
+
+/* documentos */
+const docs=$("#docs");
+const usedBy=id=>ORDER.filter(z=>ZONES[z].docs.includes(id));
+Object.entries(DOCS).forEach(([id,d])=>{
+  const el=document.createElement("details"); el.className="doc"; el.id="doc-"+id;
+  const rel=usedBy(id).map(z=>`<button class="mini" data-z="${z}">${esc(ZONES[z].name)}</button>`).join("");
+  el.innerHTML=`<summary><span class="code">${id}</span><span class="ttl">${esc(d.t)}<span class="kind">${esc(d.k)}</span></span></summary><div class="body"><p>${esc(d.b)}</p>${rel?`<div class="rel">${rel}</div>`:""}</div>`;
+  docs.appendChild(el);
+});
+docs.addEventListener("click",e=>{const b=e.target.closest(".mini"); if(b) openZone(b.dataset.z);});
+
+/* ficha */
+const sheet=$("#sheet"), scrim=$("#scrim"); let lastFocus=null;
+function openZone(id){
+  const z=ZONES[id]; lastFocus=document.activeElement;
+  sheet.className="sheet on "+z.c;
+  $("#s-chip").textContent=z.chip; $("#s-title").textContent=z.name;
+  $("#s-content").innerHTML=
+    `<dl class="rows">${z.rows.map(([a,b])=>`<div class="row"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>`+
+    `<p class="cert">${esc(z.cert)}</p>`+
+    `<div><div class="row"><dt>Documentos</dt></div><div class="sdocs">${z.docs.map(d=>`<button class="sdoc" data-d="${d}"><span class="code">${d}</span><span><b>${esc(DOCS[d].t)}</b><span>${esc(DOCS[d].b)}</span></span></button>`).join("")}</div></div>`;
+  scrim.classList.add("on");
+  $$(".zone").forEach(g=>g.classList.toggle("sel",g.dataset.id===id));
+  $("#s-close").focus();
+}
+function closeSheet(){sheet.classList.remove("on");scrim.classList.remove("on");$$(".zone").forEach(g=>g.classList.remove("sel")); if(lastFocus) lastFocus.focus();}
+$("#s-close").onclick=closeSheet; scrim.onclick=closeSheet;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sheet.classList.contains("on")) closeSheet();});
+$("#s-content").addEventListener("click",e=>{const b=e.target.closest(".sdoc"); if(!b) return;
+  closeSheet(); show("docs"); const d=$("#doc-"+b.dataset.d); d.open=true;
+  d.scrollIntoView({block:"center"}); d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");});
+/* deslizar hacia abajo para cerrar */
+let y0=null; sheet.addEventListener("touchstart",e=>{y0=e.touches[0].clientY},{passive:true});
+sheet.addEventListener("touchend",e=>{if(y0!==null&&e.changedTouches[0].clientY-y0>80&&$("#s-content").scrollTop<=0) closeSheet(); y0=null;});
+
+/* zonas del plano */
+$$(".zone").forEach(g=>{
+  g.addEventListener("click",()=>openZone(g.dataset.id));
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openZone(g.dataset.id);}});
+});
+
+/* calculadora de la era */
+function era(){
+  const p=$("#e-propia").checked, l=$("#e-leo").checked;
+  const a=1/5, b=p?1/5:0, c=l?1/25:0, t=a+b+c;
+  $("#b-a").style.width=(a*100)+"%"; $("#b-b").style.width=(b*100)+"%"; $("#b-c").style.width=(c*100)+"%";
+  const pct=(t*100).toLocaleString("es-ES",{maximumFractionDigits:0});
+  const f = !p&&!l?"1/5": !p&&l?"6/25": p&&!l?"2/5":"11/25";
+  $("#era-res").innerHTML=`${f} de la era (${pct} %)<small>Parte de la abuela, y hoy de sus herederos. Con papeles, solo el quinto comprado a Dorentina.</small>`;
+}
+$("#e-propia").onchange=era; $("#e-leo").onchange=era; era();
+</script>
+</body>
+</html>
