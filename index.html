@@ -347,8 +347,8 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
       <article>
         <h3>1. Las dos habitaciones de la tía Leo</h3>
         <ul>
-          <li>Ya ceden los herederos de Dorentina y un hijo de Emilia: con nuestra parte, el 50 %.</li>
-          <li>Falta hablar con el otro hijo de Emilia y con los de José, y llegar a un acuerdo con los de Honorio.</li>
+          <li>Ya ceden los herederos de Dorentina y los dos hijos de Emilia: con nuestra parte, el 60 %.</li>
+          <li>Falta hablar con los de José y llegar a un acuerdo con los de Honorio.</li>
           <li>Cada cesión tiene que firmarse por escrito; que la redacte el abogado.</li>
           <li>Lo que no se ceda, Elvio lo compra asumiendo el riesgo por escrito y sin poder reclamarnos nada.</li>
         </ul>
@@ -430,12 +430,12 @@ const ZONES = {
     rows:[["Dueña","Abuela Remedios"],["Qué es","Pasillo, despensa, habitación, baño, salida y escaleras al llano"],["Terreno","El huerto de 40 m² junto a la casa que recibió la abuela en el reparto de 1955 (partida 37 de su hijuela). La parte nueva ocupa unos 31 m²"],["Derecho de paso","La hijuela obligaba a ese huerto a dar paso con carro y a pie hacia los huertos y la era. Al construir, ese paso se cerró. Si nadie lo ha usado en más de 20 años, el derecho se habría perdido por no uso"]],
     cert:"Según la familia, con apoyo en la hijuela de 1955. No inscrito en el Registro; la obra tampoco consta declarada.",docs:["D14","D6"]},
   abuela:{c:"own-c",chip:"Documento privado",name:"Habitación de la abuela y lucido",short:"Reparto de los bisabuelos, 1955",ic:"1955",
-    rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","La casa en San Pablo, con su accesorio y corral, que le tocó en el reparto de sus padres de 1955 (partida 36 de su hijuela)"]],
+    rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","La casa en San Pablo, con su accesorio y corral, que le tocó en el reparto de sus padres de 1955 (partida 36 de su hijuela). En la familia se la conoce como la casa de la higuera, que compartían la abuela y la tía Leo"]],
     cert:"Documentado en la hijuela de 1955, firmada por todos los hermanos. No está inscrito en el Registro. Está dentro de la parcela catastral de la casa, a nombre de la abuela.",docs:["D14","D6","D11"]},
   leo:{c:"risk-c",chip:"Pendiente de decidir",name:"Habitaciones de la tía Leo",short:"Hoy, de sus hermanos o sus herederos",ic:"Leo",
     rows:[["Qué es","Las dos habitaciones junto a la puerta trasera, la que da a la era"],["Origen","La casa en San Pablo que le tocó a Leonarda en el reparto de 1955 (su hijuela no la tenemos)"],["De quién","La tía Leo murió sin hijos. Las heredaron sus 5 hermanos: José, Honorio, Dorentina, Remedios y Emilia; hoy, sus herederos"],["Nuestra parte","La de la abuela: un quinto de las habitaciones, y un quinto de la parte de era que iba con ellas"]],
     cert:"Según la familia, con apoyo en la escritura de 1982 (la casa linda al fondo con Leonarda Morán) y en el reparto de 1955. Ningún título a nombre de la abuela.",docs:["D1","D14"],
-    ramas:[["Remedios (nosotros)","1/5","y","Nuestra"],["Dorentina","1/5","y","Ceden"],["Emilia, un hijo","1/10","y","Cede"],["Emilia, otro hijo","1/10","p","Sin hablar"],["José","1/5","p","Pendiente"],["Honorio","1/5","n","Sin acuerdo"]]},
+    ramas:[["Remedios (nosotros)","1/5","y","Nuestra"],["Dorentina","1/5","y","Ceden"],["Emilia, un hijo","1/10","y","Cede"],["Emilia, otro hijo","1/10","y","Cede"],["José","1/5","p","Pendiente"],["Honorio","1/5","n","Sin acuerdo"]]},
   cuadra:{c:"cuadra-c",chip:"Sin inscribir",name:"Cuadra",short:"\"Casa de las Bolesas\", parcela 2047",ic:"1984",
     rows:[["Dueña","Abuela Remedios, por permuta con Honorio y Clementina en 1984"],["A cambio","La Viña del Poulo (116 m²), que era de la abuela por el reparto de 1955"],["Catastro","Estaba a nombre de Honorio. Hoy tiene la referencia 24023A034020470001AA y su titular está en conflicto"],["Registro","No está inscrita a nombre de nadie"],["Oferta","Elvio ofrece 3.000 €"]],
     cert:"Documentado con contrato privado y declarado en la herencia de 2011.",docs:["D4","D14","D5","D8","D9","D10"]},
@@ -501,7 +501,7 @@ function openZone(id){
   $("#s-content").innerHTML=
     `<dl class="rows">${z.rows.map(([a,b])=>`<div class="row"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>`+
     `<p class="cert">${esc(z.cert)}</p>`+
-    (z.ramas?`<div class="row"><dt>Cesiones de los herederos de Leo</dt></div><div class="ramas">${z.ramas.map(([n,q,k,t])=>`<div class="rama"><span>${esc(n)}</span><span class="q">${q}</span><span class="st ${k}">${esc(t)}</span></div>`).join("")}</div><p class="prog"><b>50 %</b> cubierto. Con José y el otro hijo de Emilia, el 80 %. Las cesiones tienen que constar por escrito.</p>`:"")+
+    (z.ramas?`<div class="row"><dt>Cesiones de los herederos de Leo</dt></div><div class="ramas">${z.ramas.map(([n,q,k,t])=>`<div class="rama"><span>${esc(n)}</span><span class="q">${q}</span><span class="st ${k}">${esc(t)}</span></div>`).join("")}</div><p class="prog"><b>60 %</b> cubierto. Con José, el 80 %. Las cesiones tienen que constar por escrito.</p>`:"")+
     `<div><div class="row"><dt>Documentos</dt></div><div class="sdocs">${z.docs.map(d=>`<button class="sdoc" data-d="${d}"><span class="code">${d}</span><span><b>${esc(DOCS[d].t)}</b><span>${esc(DOCS[d].b)}</span></span></button>`).join("")}</div></div>`;
   scrim.classList.add("on");
   $$(".zone").forEach(g=>g.classList.toggle("sel",g.dataset.id===id));
