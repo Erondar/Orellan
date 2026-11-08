@@ -239,16 +239,16 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
         </g>
 
         <!-- parte nueva -->
-        <g class="zone ok-c" data-id="nueva" tabindex="0" role="button" aria-label="Parte nueva">
+        <g class="zone own-c" data-id="nueva" tabindex="0" role="button" aria-label="Parte nueva">
           <rect x="14" y="150" width="114" height="262"/>
           <text class="t" x="24" y="172">Parte nueva</text>
-          <line x1="14" y1="190" x2="128" y2="190" stroke="var(--ok)" stroke-width="1"/>
+          <line x1="14" y1="190" x2="128" y2="190" stroke="var(--own)" stroke-width="1"/>
           <text class="s" x="24" y="216">Despensa</text>
-          <line x1="14" y1="245" x2="128" y2="245" stroke="var(--ok)" stroke-width="1"/>
+          <line x1="14" y1="245" x2="128" y2="245" stroke="var(--own)" stroke-width="1"/>
           <text class="s" x="24" y="271">Habitación</text>
-          <line x1="14" y1="300" x2="128" y2="300" stroke="var(--ok)" stroke-width="1"/>
+          <line x1="14" y1="300" x2="128" y2="300" stroke="var(--own)" stroke-width="1"/>
           <text class="s" x="24" y="326">Baño</text>
-          <line x1="14" y1="352" x2="128" y2="352" stroke="var(--ok)" stroke-width="1"/>
+          <line x1="14" y1="352" x2="128" y2="352" stroke="var(--own)" stroke-width="1"/>
           <text class="s" x="24" y="378">Salida y escaleras</text>
           <text class="s" x="24" y="392">al llano</text>
         </g>
@@ -265,7 +265,7 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
         <g class="zone ok-c" data-id="dorentina" tabindex="0" role="button" aria-label="Llano con bodega y gallinero">
           <rect x="14" y="426" width="252" height="56" rx="4"/>
           <text class="t" x="26" y="450">Llano (nivel bajo)</text>
-          <text class="s" x="26" y="466">Bodega y gallinero</text>
+          <text class="s" x="26" y="466">Bodega y gallinero (terreno lateral de 1982)</text>
         </g>
 
         <!-- terreno -->
@@ -360,6 +360,13 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
           <li>Saber qué ha declarado exactamente la hija de Honorio sobre el terreno de detrás y con qué documento, y comprobar que no corta el acceso a la cuadra ni a la era.</li>
         </ul>
       </article>
+      <article>
+        <h3>5. El antiguo paso por el huerto</h3>
+        <ul>
+          <li>Confirmar cuándo se construyó la parte nueva y que desde entonces nadie ha pasado por ahí hacia la era.</li>
+          <li>Contarlo al abogado y a Elvio, y mencionarlo en el contrato.</li>
+        </ul>
+      </article>
     </div>
     <p class="foot">Resumen informativo preparado con los documentos citados y lo que recuerda la familia. Superficies y ubicaciones aproximadas. No sustituye el consejo de un abogado o notario.</p>
   </section>
@@ -404,11 +411,11 @@ const DOCS = {
 
 const ZONES = {
   dorentina:{c:"ok-c",chip:"Escritura inscrita",name:"Cocina, bodega y gallinero",short:"Comprado a Dorentina en 1982",ic:"1982",
-    rows:[["Dueña","Abuela Remedios, 100 %"],["Qué es","La cocina (antiguo corredor) con la bodega debajo, y el llano con el gallinero, frente al camino"],["Origen","La casa de 33,6 m² que compró a Dorentina en 1982. En la misma escritura compró la quinta parte de la era que iba con esa casa"]],
+    rows:[["Dueña","Abuela Remedios, 100 %"],["Qué es","La cocina (antiguo corredor) con la bodega debajo, frente al camino, y el llano de abajo con el gallinero"],["Origen","Lo compró a Dorentina en 1982: la casa de 33,6 m² (bodega y corredor) y el terreno lateral de 33,6 m² (el llano con el gallinero). En la misma escritura compró la quinta parte de la era que iba con esa casa"]],
     cert:"Documentado. Inscrito en el Registro a nombre de la abuela y sin cargas.",docs:["D1","D2","D6","D11"]},
-  nueva:{c:"ok-c",chip:"Escritura inscrita",name:"Parte nueva",short:"Pasillo, baño, habitación y despensa",ic:"Obra",
-    rows:[["Dueña","Abuela Remedios"],["Qué es","Pasillo, despensa, habitación, baño, salida y escaleras al llano"],["Terreno","El terreno lateral de la escritura de 1982: está a la izquierda mirando desde el camino y mide unos 31 m², frente a los 33,6 m² de la escritura"]],
-    cert:"Deducido por el lado y la superficie. La obra no consta declarada en el Registro.",docs:["D1","D2","D6"]},
+  nueva:{c:"own-c",chip:"Documento privado",name:"Parte nueva",short:"Sobre el huerto de la abuela de 1955",ic:"Obra",
+    rows:[["Dueña","Abuela Remedios"],["Qué es","Pasillo, despensa, habitación, baño, salida y escaleras al llano"],["Terreno","El huerto de 40 m² junto a la casa que recibió la abuela en el reparto de 1955 (partida 37 de su hijuela). La parte nueva ocupa unos 31 m²"],["Derecho de paso","La hijuela obligaba a ese huerto a dar paso con carro y a pie hacia los huertos y la era. Al construir, ese paso se cerró. Si nadie lo ha usado en más de 20 años, el derecho se habría perdido por no uso"]],
+    cert:"Según la familia, con apoyo en la hijuela de 1955. No inscrito en el Registro; la obra tampoco consta declarada.",docs:["D14","D6"]},
   abuela:{c:"own-c",chip:"Documento privado",name:"Habitación de la abuela y lucido",short:"Reparto de los bisabuelos, 1955",ic:"1955",
     rows:[["Dueña","Abuela Remedios"],["Qué es","La habitación junto a la cocina, y el lucido, al que se accede desde el pasillo"],["Origen","La casa en San Pablo, con su accesorio y corral, que le tocó en el reparto de sus padres de 1955 (partida 36 de su hijuela)"]],
     cert:"Documentado en la hijuela de 1955, firmada por todos los hermanos. No está inscrito en el Registro. Está dentro de la parcela catastral de la casa, a nombre de la abuela.",docs:["D14","D6","D11"]},
@@ -420,8 +427,8 @@ const ZONES = {
     rows:[["Dueña","Abuela Remedios, por permuta con Honorio y Clementina en 1984"],["A cambio","La Viña del Poulo (116 m²), que era de la abuela por el reparto de 1955"],["Catastro","Estaba a nombre de Honorio. Hoy tiene la referencia 24023A034020470001AA y su titular está en conflicto"],["Registro","No está inscrita a nombre de nadie"],["Oferta","Elvio ofrece 3.000 €"]],
     cert:"Documentado con contrato privado y declarado en la herencia de 2011.",docs:["D4","D14","D5","D8","D9","D10"]},
   terreno:{c:"dis-c",chip:"En discusión",name:"Terreno entre la cuadra y la era",short:"Una hija de Honorio lo ha puesto a su nombre",ic:"?",
-    rows:[["Qué es","Un terreno pequeño detrás de la cuadra, entre la cuadra y la era. No es la era"],["Situación","Una de las hijas de Honorio lo ha puesto a su nombre y dice que es suyo"],["A favor de ella","La permuta de 1984 habla solo de la cuadra, no de este terreno"],["A favor de la abuela","Su hijuela de 1955 le da un huerto de 40 m² junto a la casa, con paso hacia los huertos y la era. No sabemos si es este terreno"]],
-    cert:"Sin aclarar. Por su tamaño no afecta a la venta, salvo que por ahí pase el acceso a la cuadra o a la era.",docs:["D4","D14"]},
+    rows:[["Qué es","Un terreno pequeño detrás de la cuadra, entre la cuadra y la era. No es la era"],["Situación","Una de las hijas de Honorio lo ha puesto a su nombre y dice que es suyo"],["Documentos","La permuta de 1984 habla solo de la cuadra, no de este terreno. El huerto de la abuela de 1955 es donde está la parte nueva, así que tampoco es este"]],
+    cert:"Sin aclarar. Por su tamaño no afecta a la venta, salvo que por ahí pase el acceso a la cuadra o a la era.",docs:["D4"]},
   era:{c:"era-c",chip:"Abuela 44 %",name:"Era de San Pablo",short:"Va con las casas de San Pablo",ic:"44%",
     rows:[["Origen","Reparto de los bisabuelos de 1955: la era quedó para los cinco hermanos que recibieron casa en San Pablo (todos menos José), una quinta parte cada uno"],["Abuela","Su quinta parte de 1955, la de Dorentina comprada con su casa en 1982, y un veinticincoavo de la parte de Leo: 11/25"],["Uso","El patio y la entrada por detrás de la casa están sobre la era, con derecho de paso"]],
     cert:"Inscrito solo el quinto de Dorentina. La quinta parte propia consta en la hijuela de 1955. La era no figura en la herencia de 2011.",docs:["D14","D1","D3"]}
